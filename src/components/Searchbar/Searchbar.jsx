@@ -19,7 +19,7 @@ export class Searchbar extends Component {
 
     render(){
         return (
-            <SearchStyles>
+            <SearchStyles onSubmit={this.search}>
             <div className="form">
                 <input
                 className="input"

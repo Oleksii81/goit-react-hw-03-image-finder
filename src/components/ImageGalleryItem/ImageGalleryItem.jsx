@@ -4,7 +4,7 @@ import { ImageGalleryItemStyles } from "./ImageGalleryItem.styled";
 
 export function ImageGalleryItem({ url, tags, onClick }) {
   return (
-            <>
+    <>
       <ImageGalleryItemStyles>
         <img
           className="image"

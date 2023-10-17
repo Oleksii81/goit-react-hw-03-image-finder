@@ -44,7 +44,7 @@ export class ImageGallery extends Component {
             shouldShowLoadMore: shouldShowLoadMore,
           });
         })
-        .catch(_error => this.setState({ status: 'rejected' }));
+        .catch(error => this.setState({ status: 'rejected' }));
     };
   
     fetchLoadMore = () => {
@@ -57,7 +57,7 @@ export class ImageGallery extends Component {
             status: 'resolve',
           }));
         })
-        .catch(_error => this.setState({ status: 'rejected' }));
+        .catch(error => this.setState({ status: 'rejected' }));
     };
   
     render() {

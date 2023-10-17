@@ -1,5 +1,4 @@
 import { Component } from "react";
-//import { Containers } from "./Containers/Containers";
 import { Searchbar } from "./Searchbar/Searchbar";
 import { ImageGallery } from "./ImageGallery/ImageGallery";
 import { Modal } from "./Modal/Modal";
