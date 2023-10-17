@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { Component } from "react";
-import getImages from "../../Api/api";
+import { getImages } from "../../Api/api";
 import { PER_PAGE } from '../../Api/api';
 import { Loader } from '../Loader/Loader';
 import { LoadMoreBtn } from '../Button/Button';
@@ -20,7 +20,7 @@ export class ImageGallery extends Component {
       totalPages: 0,
     };
   
-    componentDidUpdate(prevProps, _prevState) {
+    componentDidUpdate(prevProps, prevState) {
       if (prevProps.inputValue !== this.props.inputValue) {
         this.fetchLoad();
       }
