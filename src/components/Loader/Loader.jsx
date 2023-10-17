@@ -16,6 +16,8 @@ export const Loader = ({ loading }) => {
     </LoaderStyled>
   );
 };
+
 Loader.propTypes = {
   loading: PropTypes.bool,
 };
+

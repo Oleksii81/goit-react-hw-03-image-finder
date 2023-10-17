@@ -17,20 +17,4 @@ export const ImageGalleryItemStyles = styled.li`
     overflow: hidden;
     margin: 0 auto;
 }
-
-.info {
-    background-color: rgb(255, 255, 255, 0.4);
-    display: flex;
-    padding: 5px;
-    height: 160px;
-    max-width: 360px;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.info-item{
-    margin-top: 0;
-    margin-bottom: 5px;
-}
 `
