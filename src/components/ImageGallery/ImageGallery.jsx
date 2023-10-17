@@ -20,7 +20,7 @@ export class ImageGallery extends Component {
       totalPages: 0,
     };
   
-    componentDidUpdate(prevProps, prevState) {
+    componentDidUpdate(prevProps, _prevState) {
       if (prevProps.inputValue !== this.props.inputValue) {
         this.fetchLoad();
       }
@@ -44,7 +44,7 @@ export class ImageGallery extends Component {
             shouldShowLoadMore: shouldShowLoadMore,
           });
         })
-        .catch(error => this.setState({ status: 'rejected' }));
+        .catch(_error => this.setState({ status: 'rejected' }));
     };
   
     fetchLoadMore = () => {
@@ -57,7 +57,7 @@ export class ImageGallery extends Component {
             status: 'resolve',
           }));
         })
-        .catch(error => this.setState({ status: 'rejected' }));
+        .catch(_error => this.setState({ status: 'rejected' }));
     };
   
     render() {
