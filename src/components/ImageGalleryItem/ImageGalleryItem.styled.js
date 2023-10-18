@@ -16,5 +16,10 @@ export const ImageGalleryItemStyles = styled.li`
     background-size: cover;
     overflow: hidden;
     margin: 0 auto;
+    cursor: pointer;
 }
+.image:hover {
+        border-color: #daf52e;
+        box-shadow: 0px 3px 20px rgb(247, 243, 4);
+    }
 `

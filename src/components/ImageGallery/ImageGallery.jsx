@@ -3,7 +3,7 @@ import { Component } from "react";
 import { getImages } from "../../Api/api";
 import { PER_PAGE } from '../../Api/api';
 import { Loader } from '../Loader/Loader';
-import { LoadMoreBtn } from '../Button/Button';
+import { Button } from '../Button/Button';
 import Notiflix from 'notiflix';
 import { ImageGalleryStyles } from "./ImageGallery.styled";
 import { ImageGalleryItem } from "../ImageGalleryItem/ImageGalleryItem";
@@ -82,7 +82,7 @@ export class ImageGallery extends Component {
             </ImageGalleryStyles>
             {shouldShowLoadMore &&
               (this.props.page < this.state.totalPages ? (
-                <LoadMoreBtn onClick={this.props.loadMoreBtn} />
+                <Button onClick={this.props.loadMoreBtn} />
               ) : (
                 Notiflix.Notify.failure('No more results')
               ))}

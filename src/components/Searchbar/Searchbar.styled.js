@@ -4,6 +4,7 @@ export const SearchStyles = styled.form`
     display: flex;
     position: relative;
     padding: 48px;
+    justify-content: center;
     .button{
         padding: 10px 20px;
         margin-left: 10px;
