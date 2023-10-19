@@ -1,8 +1,9 @@
 import { Component } from "react";
 import { Searchbar } from "./Searchbar/Searchbar";
 import { ImageGallery } from "./ImageGallery/ImageGallery";
+import { Button } from './Button/Button';
+import Notiflix from 'notiflix';
 import { Modal } from "./Modal/Modal";
-
 
 export class App extends Component {
   state = {
@@ -10,10 +11,12 @@ export class App extends Component {
     modalImg: '',
     showModal: false,
     page: 1,
+    shouldShowLoadMore: false,
+    totalPages: 0
   };
 
   getInputValue = handleValue => {
-    this.setState({ inputValue: handleValue, page: 1 });
+    this.setState({ inputValue: handleValue, page: 1, shouldShowLoadMore: false });
   };
 
   toggleModal = () => {
@@ -32,7 +35,7 @@ export class App extends Component {
   };
 
   render() {
-    const { modalImg, showModal, page } = this.state;
+    const { modalImg, showModal, page, shouldShowLoadMore, totalPages } = this.state;
 
     return (
       <>
@@ -42,8 +45,16 @@ export class App extends Component {
           onClick={this.getLargeImg}
           loadMoreBtn={this.loadMoreBtn}
           page={page}
+          shouldShowLoadMore={shouldShowLoadMore}
+          totalPages={totalPages}
         />
         {showModal && <Modal url={modalImg} onClose={this.toggleModal} />}
+        {shouldShowLoadMore &&
+          (page < totalPages ? (
+            <Button isVisible={shouldShowLoadMore} onClick={this.loadMoreBtn} />
+          ) : (
+            Notiflix.Notify.failure('No more results')
+          ))}
       </>
     );
   }

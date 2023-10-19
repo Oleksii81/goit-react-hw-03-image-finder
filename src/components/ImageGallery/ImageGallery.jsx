@@ -3,8 +3,7 @@ import { Component } from "react";
 import { getImages } from "../../Api/api";
 import { PER_PAGE } from '../../Api/api';
 import { Loader } from '../Loader/Loader';
-import { Button } from '../Button/Button';
-import Notiflix from 'notiflix';
+
 import { ImageGalleryStyles } from "./ImageGallery.styled";
 import { ImageGalleryItem } from "../ImageGalleryItem/ImageGalleryItem";
 
@@ -61,7 +60,7 @@ export class ImageGallery extends Component {
     };
   
     render() {
-      const { images, status, shouldShowLoadMore } = this.state;
+      const { images, status } = this.state;
   
       if (status === 'pending') {
         return <Loader />;
@@ -80,13 +79,7 @@ export class ImageGallery extends Component {
                 />
               ))}
             </ImageGalleryStyles>
-            {shouldShowLoadMore &&
-              (this.props.page < this.state.totalPages ? (
-                <Button onClick={this.props.loadMoreBtn} />
-              ) : (
-                Notiflix.Notify.failure('No more results')
-              ))}
-            {images.length === 0 && Notiflix.Notify.failure('No results')}
+            
           </div>
         );
       }
