@@ -36,3 +36,4 @@ export const LoadMoreBtnStyles = styled.button`
     }
   }
 `;
+
