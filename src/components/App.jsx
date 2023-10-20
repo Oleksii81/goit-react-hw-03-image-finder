@@ -1,31 +1,54 @@
 import { Component } from "react";
 import { Searchbar } from "./Searchbar/Searchbar";
+import { getImages } from "../Api/api";
+import { PER_PAGE } from '../Api/api';
 import { ImageGallery } from "./ImageGallery/ImageGallery";
 import { Button } from './Button/Button';
-import Notiflix from 'notiflix';
-import { Modal } from "./Modal/Modal";
+import { Loader } from "./Loader/Loader";
 
 export class App extends Component {
   state = {
     inputValue: '',
-    modalImg: '',
-    showModal: false,
+    images: [],
     page: 1,
-    shouldShowLoadMore: false,
-    totalPages: 0
+    status: 'idle',
+    totalPages: 0,
+    loading: false,
+    error: false,
+  };
+
+  async componentDidUpdate(prevProps, prevState) {
+    if (prevState.inputValue !== this.state.inputValue || prevState.page !== this.state.page) {
+      this.fetchLoad();
+    }
+  }
+
+  fetchLoad = () => {
+    const { inputValue, page } = this.state;
+
+    this.setState({ loading: true });
+
+    getImages(inputValue, page)
+      .then(response => {
+        const totalPages = Math.ceil(response.totalHits / PER_PAGE);
+        const shouldShowLoadMore = totalPages > 1;
+
+        this.setState(prevState => ({
+          images: [...prevState.images, ...response.hits],
+          status: 'resolve',
+          totalPages: totalPages,
+          shouldShowLoadMore: shouldShowLoadMore,
+          loading: false,
+          error: false,
+        }));
+      })
+      .catch(error => {
+        this.setState({ status: 'rejected', loading: false, error: true });
+      });
   };
 
   getInputValue = handleValue => {
-    this.setState({ inputValue: handleValue, page: 1, shouldShowLoadMore: false });
-  };
-
-  toggleModal = () => {
-    this.setState(({ showModal }) => ({ showModal: !showModal }));
-  };
-
-  getLargeImg = url => {
-    this.toggleModal();
-    this.setState({ modalImg: url });
+    this.setState({ inputValue: handleValue, page: 1, shouldShowLoadMore: false, images: [] });
   };
 
   loadMoreBtn = () => {
@@ -35,26 +58,16 @@ export class App extends Component {
   };
 
   render() {
-    const { modalImg, showModal, page, shouldShowLoadMore, totalPages } = this.state;
+    const { images, status, shouldShowLoadMore, loading } = this.state;
+    if (status === 'pending' || loading) {
+      return <Loader />;
+    }
 
     return (
       <>
         <Searchbar getInputValue={this.getInputValue} />
-        <ImageGallery
-          inputValue={this.state.inputValue}
-          onClick={this.getLargeImg}
-          loadMoreBtn={this.loadMoreBtn}
-          page={page}
-          shouldShowLoadMore={shouldShowLoadMore}
-          totalPages={totalPages}
-        />
-        {showModal && <Modal url={modalImg} onClose={this.toggleModal} />}
-        {shouldShowLoadMore &&
-          (page < totalPages ? (
-            <Button isVisible={shouldShowLoadMore} onClick={this.loadMoreBtn} />
-          ) : (
-            Notiflix.Notify.failure('No more results')
-          ))}
+        {images.length > 0 && <ImageGallery images={images} />}
+        {shouldShowLoadMore && <Button loadMoreBtn={this.loadMoreBtn} />}
       </>
     );
   }
