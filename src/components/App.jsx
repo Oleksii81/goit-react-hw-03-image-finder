@@ -5,6 +5,7 @@ import { PER_PAGE } from '../Api/api';
 import { ImageGallery } from "./ImageGallery/ImageGallery";
 import { Button } from './Button/Button';
 import { Loader } from "./Loader/Loader";
+import { ToastContainer, toast } from 'react-toastify';
 
 export class App extends Component {
   state = {
@@ -23,35 +24,46 @@ export class App extends Component {
     }
   }
 
-  fetchLoad = () => {
-    const { inputValue, page } = this.state;
+fetchLoad = () => {
+  const { inputValue, page } = this.state;
 
-    this.setState({ loading: true });
+  if (inputValue.trim() === '') {
+    toast.error('Please enter a valid search query.');
+    return;
+  }
 
-    getImages(inputValue, page)
-      .then(response => {
-        const totalPages = Math.ceil(response.totalHits / PER_PAGE);
-        const shouldShowLoadMore = totalPages > 1;
+  this.setState({ loading: true });
 
-        this.setState(prevState => ({
-          images: [...prevState.images, ...response.hits],
-          status: 'resolve',
-          totalPages: totalPages,
-          shouldShowLoadMore: shouldShowLoadMore,
-          loading: false,
-          error: false,
-        }));
-      })
-      .catch(error => {
-        this.setState({ status: 'rejected', loading: false, error: true });
-      });
-  };
+  getImages(inputValue, page)
+    .then(response => {
+      const totalPages = Math.ceil(response.totalHits / PER_PAGE);
+      const shouldShowLoadMore = totalPages > 1;
+
+      if (response.hits.length === 0) {
+        toast.error('Sorry, there are no images matching your search query. Please try again.');
+      }
+
+      this.setState(prevState => ({
+        images: [...prevState.images, ...response.hits],
+        status: 'resolve',
+        totalPages: totalPages,
+        shouldShowLoadMore: shouldShowLoadMore,
+        loading: false,
+        error: false,
+      }));
+    })
+    .catch(error => {
+      toast.error('Sorry, there was an error. Please try again.');
+      this.setState({ status: 'rejected', loading: false, error: true });
+    });
+};
 
   getInputValue = handleValue => {
     this.setState({ inputValue: handleValue, page: 1, shouldShowLoadMore: false, images: [] });
   };
 
-  loadMoreBtn = () => {
+  loadMoreBtn = (event) => {
+    event.preventDefault();
     this.setState(prevState => ({
       page: prevState.page + 1,
     }));
@@ -68,6 +80,18 @@ export class App extends Component {
         <Searchbar getInputValue={this.getInputValue} />
         {images.length > 0 && <ImageGallery images={images} />}
         {shouldShowLoadMore && <Button loadMoreBtn={this.loadMoreBtn} />}
+        <ToastContainer
+          position="top-right"
+          autoClose={2500}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="dark"
+        />
       </>
     );
   }
