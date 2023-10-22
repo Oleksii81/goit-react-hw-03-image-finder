@@ -66,7 +66,6 @@ export class App extends Component {
       <>
         <Searchbar getInputValue={this.getInputValue} />
         {images.length > 0 && <ImageGallery images={images} />}
-        {images.length === 0 && toast.error('No results')}
         {shouldShowLoadMore && <Button loadMoreBtn={this.loadMoreBtn} />}
         <ToastContainer
           position="top-right"
