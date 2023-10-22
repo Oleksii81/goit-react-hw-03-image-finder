@@ -13,8 +13,6 @@ export class Modal extends Component {
       onClose: PropTypes.func.isRequired,
     };
   
-    state = {};
-  
     componentDidMount() {
       window.addEventListener('keydown', this.clickEsc);
     }
